@@ -26,6 +26,23 @@ public class TaxFunction {
         return taxExemption;
     }
 }
+ public static class EmployeeFamily {
+    private boolean isMarried;
+    private int numberOfChildren;
+
+    public EmployeeFamily(boolean isMarried, int numberOfChildren) {
+      this.isMarried = isMarried;
+      this.numberOfChildren = numberOfChildren;
+    }
+
+    public boolean getIsMarried() {
+      return isMarried;
+    }
+
+    public int getNumberOfChildren() {
+      return numberOfChildren;
+    }
+  }
 
 
 	public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
