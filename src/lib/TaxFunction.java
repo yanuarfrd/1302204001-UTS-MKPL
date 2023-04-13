@@ -2,19 +2,49 @@ package lib;
 
 public class TaxFunction {
 
+	private static final int TAX_EXEMPTION_SINGLE = 54000000;
+  	private static final int TAX_EXEMPTION_MARRIED = 58500000;
+  	private static final int TAX_EXEMPTION_CHILD = 1500000;
+  	private static final double TAX_RATE = 0.05;
 	
-	/**
-	 * Fungsi untuk menghitung jumlah pajak penghasilan pegawai yang harus dibayarkan setahun.
-	 * 
-	 * Pajak dihitung sebagai 5% dari penghasilan bersih tahunan (gaji dan pemasukan bulanan lainnya dikalikan jumlah bulan bekerja dikurangi pemotongan) dikurangi penghasilan tidak kena pajak.
-	 * 
-	 * Jika pegawai belum menikah dan belum punya anak maka penghasilan tidak kena pajaknya adalah Rp 54.000.000.
-	 * Jika pegawai sudah menikah maka penghasilan tidak kena pajaknya ditambah sebesar Rp 4.500.000.
-	 * Jika pegawai sudah memiliki anak maka penghasilan tidak kena pajaknya ditambah sebesar Rp 4.500.000 per anak sampai anak ketiga.
-	 * 
-	 */
-	
-	
+	public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking,int deductible, boolean isMarried, int numberOfChildren) {
+        int annualSalary = (monthlySalary + otherMonthlyIncome) * numberOfMonthWorking;
+        int taxExemption = getTaxExemption(isMarried, numberOfChildren);
+        int taxableIncome = Math.max(0, annualSalary - deductible - taxExemption);
+        int tax = (int) Math.round(taxableIncome * TAX_RATE);
+        return tax;
+    }
+
+    private static int getTaxExemption(boolean isMarried, int numberOfChildren) {
+        int taxExemption = 0;
+        if (isMarried) {
+            taxExemption = ANNUAL_TAX_EXEMPTION_MARRIED;
+        } else {
+            taxExemption = ANNUAL_TAX_EXEMPTION_SINGLE;
+        }
+        taxExemption += Math.min(numberOfChildren, MAX_CHILDREN_COUNT) * ANNUAL_TAX_EXEMPTION_PER_CHILD;
+        return taxExemption;
+    }
+}
+ public static class EmployeeFamily {
+    private boolean isMarried;
+    private int numberOfChildren;
+
+    public EmployeeFamily(boolean isMarried, int numberOfChildren) {
+      this.isMarried = isMarried;
+      this.numberOfChildren = numberOfChildren;
+    }
+
+    public boolean getIsMarried() {
+      return isMarried;
+    }
+
+    public int getNumberOfChildren() {
+      return numberOfChildren;
+    }
+  }
+
+
 	public static int calculateTax(int monthlySalary, int otherMonthlyIncome, int numberOfMonthWorking, int deductible, boolean isMarried, int numberOfChildren) {
 		
 		int tax = 0;
